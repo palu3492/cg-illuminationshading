@@ -83,14 +83,20 @@ class GlApp {
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         
         // draw all models --> note you need to properly select shader here
+        // this will be dependent on the this.algorithm and the color/texture shader
         for (let i = 0; i < this.scene.models.length; i ++) {
+            //this tells us which program shader to use
             this.gl.useProgram(this.shader['emissive'].program);
 
+            // building up the model matrix, which is the translate and scale matrix 
             glMatrix.mat4.identity(this.model_matrix);
             glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
             glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
 
+            //uploads information to the graphics card
+            //three floating values representing model color r,g,b
             this.gl.uniform3fv(this.shader['emissive'].uniform.material, this.scene.models[i].material.color);
+            //parameters (shader's variable, transpose, actual 16 values to be 4x4matrix)
             this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.projection, false, this.projection_matrix);
             this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.view, false, this.view_matrix);
             this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.model, false, this.model_matrix);
@@ -99,7 +105,8 @@ class GlApp {
             this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
             this.gl.bindVertexArray(null);
         }
-
+        
+        //leave this hardcoded for the lights
         // draw all light sources
         for (let i = 0; i < this.scene.light.point_lights.length; i ++) {
             this.gl.useProgram(this.shader['emissive'].program);
