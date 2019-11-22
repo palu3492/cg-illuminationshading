@@ -9,15 +9,18 @@ class GlApp {
         }
 
         this.scene = scene;
-        this.algorithm = 'gouraud'
+        this.algorithm = 'gouraud';
         this.shader = {gouraud_color: null, gouraud_texture: null,
                        phong_color: null,   phong_texture: null};
         this.vertex_position_attrib = 0;
         this.vertex_normal_attrib = 1;
         this.vertex_texcoord_attrib = 2;
 
+        //transform that moves and scales model into world coordinates
         this.projection_matrix = glMatrix.mat4.create();
+        //defines where the virtual camera is
         this.view_matrix = glMatrix.mat4.create();
+        //projection matrix
         this.model_matrix = glMatrix.mat4.create();
 
         this.vertex_array = {plane: null, cube: null, sphere: null};
@@ -33,6 +36,7 @@ class GlApp {
         let emissive_vs = this.GetFile('shaders/emissive.vert');
         let emissive_fs = this.GetFile('shaders/emissive.frag');
 
+        //loads and compiles stuff on graphics card
         Promise.all([gouraud_color_vs, gouraud_color_fs, gouraud_texture_vs, gouraud_texture_fs,
                      phong_color_vs, phong_color_fs, phong_texture_vs, phong_texture_fs,
                      emissive_vs, emissive_fs])
@@ -41,22 +45,28 @@ class GlApp {
     }
 
     InitializeGlApp() {
+        //where we want to draw in the canvas
         this.gl.viewport(0, 0, this.gl.drawingBufferWidth, this.gl.drawingBufferHeight);
+        //erasing previous frame, putting light grey into framebuffer
         this.gl.clearColor(0.8, 0.8, 0.8, 1.0);
+        //enables z-buffer
         this.gl.enable(this.gl.DEPTH_TEST);
 
+        //creates the vertex array objects
         this.vertex_array.plane = CreatePlaneVao(this);
         this.vertex_array.cube = CreateCubeVao(this);
         this.vertex_array.sphere = CreateSphereVao(this);
 
         let fov = 45.0 * (Math.PI / 180.0);
         let aspect = this.canvas.width / this.canvas.height;
+        //creates projections matrix based on field of view and aspect ratio
         glMatrix.mat4.perspective(this.projection_matrix, fov, aspect, 1.0, 50.0);
         
         let cam_pos = this.scene.camera.position;
         let cam_target = glMatrix.vec3.create();
         let cam_up = this.scene.camera.up;
         glMatrix.vec3.add(cam_target, cam_pos, this.scene.camera.direction);
+        //sets vrp and vpn
         glMatrix.mat4.lookAt(this.view_matrix, cam_pos, cam_target, cam_up);
 
         this.Render();
@@ -80,6 +90,7 @@ class GlApp {
     }
 
     Render() {
+        //clear color and depth
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
         
         // draw all models --> note you need to properly select shader here
@@ -92,8 +103,10 @@ class GlApp {
             glMatrix.mat4.identity(this.model_matrix);
             glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
             glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
-
-            //uploads information to the graphics card
+            
+            //2fv for textures
+            //uniforms are global per model values
+            //uploads information to the graphics card: uniform data per model
             //three floating values representing model color r,g,b
             this.gl.uniform3fv(this.shader['emissive'].uniform.material, this.scene.models[i].material.color);
             //parameters (shader's variable, transpose, actual 16 values to be 4x4matrix)
