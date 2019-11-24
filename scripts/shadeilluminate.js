@@ -10,8 +10,10 @@ class GlApp {
 
         this.scene = scene;
         this.algorithm = 'gouraud';
-        this.shader = {gouraud_color: null, gouraud_texture: null,
-                       phong_color: null,   phong_texture: null};
+        this.shader = {
+            gouraud_color: null, gouraud_texture: null,
+            phong_color: null, phong_texture: null
+        };
         this.vertex_position_attrib = 0;
         this.vertex_normal_attrib = 1;
         this.vertex_texcoord_attrib = 2;
@@ -23,7 +25,7 @@ class GlApp {
         //projection matrix
         this.model_matrix = glMatrix.mat4.create();
 
-        this.vertex_array = {plane: null, cube: null, sphere: null};
+        this.vertex_array = { plane: null, cube: null, sphere: null };
 
         let gouraud_color_vs = this.GetFile('shaders/gouraud_color.vert');
         let gouraud_color_fs = this.GetFile('shaders/gouraud_color.frag');
@@ -38,10 +40,10 @@ class GlApp {
 
         //loads and compiles stuff on graphics card
         Promise.all([gouraud_color_vs, gouraud_color_fs, gouraud_texture_vs, gouraud_texture_fs,
-                     phong_color_vs, phong_color_fs, phong_texture_vs, phong_texture_fs,
-                     emissive_vs, emissive_fs])
-        .then((shaders) => this.LoadShaders(shaders))
-        .catch((error) => this.GetFileError(error));
+            phong_color_vs, phong_color_fs, phong_texture_vs, phong_texture_fs,
+            emissive_vs, emissive_fs])
+            .then((shaders) => this.LoadShaders(shaders))
+            .catch((error) => this.GetFileError(error));
     }
 
     InitializeGlApp() {
@@ -61,7 +63,7 @@ class GlApp {
         let aspect = this.canvas.width / this.canvas.height;
         //creates projections matrix based on field of view and aspect ratio
         glMatrix.mat4.perspective(this.projection_matrix, fov, aspect, 1.0, 50.0);
-        
+
         let cam_pos = this.scene.camera.position;
         let cam_target = glMatrix.vec3.create();
         let cam_up = this.scene.camera.up;
@@ -92,36 +94,73 @@ class GlApp {
     Render() {
         //clear color and depth
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-        
+
         // draw all models --> note you need to properly select shader here
         // this will be dependent on the this.algorithm and the color/texture shader
-        for (let i = 0; i < this.scene.models.length; i ++) {
-            //this tells us which program shader to use
-            this.gl.useProgram(this.shader['emissive'].program);
+        console.log(this.algorithm);
 
-            // building up the model matrix, which is the translate and scale matrix 
-            glMatrix.mat4.identity(this.model_matrix);
-            glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
-            glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
-            
-            //2fv for textures
-            //uniforms are global per model values
-            //uploads information to the graphics card: uniform data per model
-            //three floating values representing model color r,g,b
-            this.gl.uniform3fv(this.shader['emissive'].uniform.material, this.scene.models[i].material.color);
-            //parameters (shader's variable, transpose, actual 16 values to be 4x4matrix)
-            this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.projection, false, this.projection_matrix);
-            this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.view, false, this.view_matrix);
-            this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.model, false, this.model_matrix);
+        //goroud or phong
+        //loop through models
+        //-based on texture undefined or not, run different scripts
 
-            this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
-            this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
-            this.gl.bindVertexArray(null);
+
+
+        if (this.algorithm === 'gouraud') {
+            for (let i = 0; i < this.scene.models.length; i++) {
+                //this tells us which program shader to use
+                this.gl.useProgram(this.shader['gouraud_color'].program);
+                console.log(this.scene.models[i].texture);
+
+                // building up the model matrix, which is the translate and scale matrix 
+                glMatrix.mat4.identity(this.model_matrix);
+                glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
+                glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
+
+                //2fv for textures
+                //uniforms are global per model values
+                //uploads information to the graphics card: uniform data per model
+                //three floating values representing model color r,g,b
+                this.gl.uniform3fv(this.shader['gouraud_color'].uniform.material, this.scene.models[i].material.color);
+                //parameters (shader's variable, transpose, actual 16 values to be 4x4matrix)
+                this.gl.uniformMatrix4fv(this.shader['gouraud_color'].uniform.projection, false, this.projection_matrix);
+                this.gl.uniformMatrix4fv(this.shader['gouraud_color'].uniform.view, false, this.view_matrix);
+                this.gl.uniformMatrix4fv(this.shader['gouraud_color'].uniform.model, false, this.model_matrix);
+
+                this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
+                this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
+                this.gl.bindVertexArray(null);
+            }
+
         }
-        
+        else {
+            for (let i = 0; i < this.scene.models.length; i++) {
+                //this tells us which program shader to use
+                this.gl.useProgram(this.shader['emissive'].program);
+                console.log(this.scene.models[i].texture);
+
+                // building up the model matrix, which is the translate and scale matrix 
+                glMatrix.mat4.identity(this.model_matrix);
+                glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
+                glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
+
+                //2fv for textures
+                //uniforms are global per model values
+                //uploads information to the graphics card: uniform data per model
+                //three floating values representing model color r,g,b
+                this.gl.uniform3fv(this.shader['emissive'].uniform.material, this.scene.models[i].material.color);
+                //parameters (shader's variable, transpose, actual 16 values to be 4x4matrix)
+                this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.projection, false, this.projection_matrix);
+                this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.view, false, this.view_matrix);
+                this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.model, false, this.model_matrix);
+
+                this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
+                this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
+                this.gl.bindVertexArray(null);
+            }
+        }
         //leave this hardcoded for the lights
         // draw all light sources
-        for (let i = 0; i < this.scene.light.point_lights.length; i ++) {
+        for (let i = 0; i < this.scene.light.point_lights.length; i++) {
             this.gl.useProgram(this.shader['emissive'].program);
 
             glMatrix.mat4.identity(this.model_matrix);
@@ -142,7 +181,7 @@ class GlApp {
 
     UpdateScene(scene) {
         this.scene = scene;
-        
+
         let cam_pos = this.scene.camera.position;
         let cam_target = glMatrix.vec3.create();
         let cam_up = this.scene.camera.up;
@@ -160,12 +199,12 @@ class GlApp {
     GetFile(url) {
         return new Promise((resolve, reject) => {
             let req = new XMLHttpRequest();
-            req.onreadystatechange = function() {
+            req.onreadystatechange = function () {
                 if (req.readyState === 4 && req.status === 200) {
                     resolve(req.response);
                 }
                 else if (req.readyState === 4) {
-                    reject({url: req.responseURL, status: req.status});
+                    reject({ url: req.responseURL, status: req.status });
                 }
             };
             req.open('GET', url, true);
@@ -200,7 +239,7 @@ class GlApp {
         this.LinkShaderProgram(program);
 
         let light_ambient_uniform = this.gl.getUniformLocation(program, 'light_ambient');
-		let light_pos_uniform = this.gl.getUniformLocation(program, 'light_position');
+        let light_pos_uniform = this.gl.getUniformLocation(program, 'light_position');
         let light_col_uniform = this.gl.getUniformLocation(program, 'light_color');
         let camera_pos_uniform = this.gl.getUniformLocation(program, 'camera_position');
         let material_col_uniform = this.gl.getUniformLocation(program, 'material_color');
@@ -213,7 +252,7 @@ class GlApp {
         this.shader[program_name] = {
             program: program,
             uniform: {
-				light_ambient: light_ambient_uniform,
+                light_ambient: light_ambient_uniform,
                 light_pos: light_pos_uniform,
                 light_col: light_col_uniform,
                 camera_pos: camera_pos_uniform,
@@ -240,7 +279,7 @@ class GlApp {
 
         this.LinkShaderProgram(program);
 
-		let light_ambient_uniform = this.gl.getUniformLocation(program, 'light_ambient');
+        let light_ambient_uniform = this.gl.getUniformLocation(program, 'light_ambient');
         let light_pos_uniform = this.gl.getUniformLocation(program, 'light_position');
         let light_col_uniform = this.gl.getUniformLocation(program, 'light_color');
         let camera_pos_uniform = this.gl.getUniformLocation(program, 'camera_position');
@@ -256,7 +295,7 @@ class GlApp {
         this.shader[program_name] = {
             program: program,
             uniform: {
-				light_ambient: light_ambient_uniform,
+                light_ambient: light_ambient_uniform,
                 light_pos: light_pos_uniform,
                 light_col: light_col_uniform,
                 camera_pos: camera_pos_uniform,

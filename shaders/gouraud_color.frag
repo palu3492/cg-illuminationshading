@@ -1,6 +1,7 @@
 #version 300 es
 
 precision mediump float;
+precision vec3 i;
 
 in vec3 ambient;
 in vec3 diffuse;
@@ -12,5 +13,6 @@ uniform vec3 material_specular; // Ks
 out vec4 FragColor;
 
 void main() {
-    FragColor = vec4(material_color, 1.0);
+    i = ambient*material_color + diffuse*material_color + specular*material_specular;
+    FragColor = vec4(i, 1.0);
 }
