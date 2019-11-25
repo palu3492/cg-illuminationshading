@@ -127,10 +127,10 @@ class GlApp {
                 // model
                 this.gl.uniform3fv(this.shader[shaderType].uniform.material_col, this.scene.models[i].material.color);
                 this.gl.uniform3fv(this.shader[shaderType].uniform.material_spec, this.scene.models[i].material.specular);
-                this.gl.uniform1ui(this.shader[shaderType].uniform.shininess, this.scene.models[i].material.shininess);
+                this.gl.uniform1f(this.shader[shaderType].uniform.shininess, this.scene.models[i].material.shininess);
                 // camera
                 this.gl.uniform3fv(this.shader[shaderType].uniform.camera_pos, this.scene.camera.position);
-                // light
+                // light (one light)
                 this.gl.uniform3fv(this.shader[shaderType].uniform.light_ambient, this.scene.light.ambient);
                 this.gl.uniform3fv(this.shader[shaderType].uniform.light_pos, this.scene.light.point_lights[0].position);
                 this.gl.uniform3fv(this.shader[shaderType].uniform.light_col, this.scene.light.point_lights[0].color);
@@ -146,19 +146,6 @@ class GlApp {
             this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
             this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
             this.gl.bindVertexArray(null);
-            /*
-            in uniform object:
-            light_ambient: light_ambient_uniform,
-            light_pos: light_pos_uniform,
-            light_col: light_col_uniform,
-            camera_pos: camera_pos_uniform,
-            material_col: material_col_uniform,
-            material_spec: material_spec_uniform,
-            shininess: shininess_uniform,
-            projection: projection_uniform,
-            view: view_uniform,
-            model: model_uniform
-             */
         }
         //leave this hardcoded for the lights
         // draw all light sources

@@ -1,7 +1,6 @@
 #version 300 es
 
 precision mediump float;
-vec3 i;
 
 in vec3 ambient; // Ia
 in vec3 diffuse; // Ip * dot(N, L)
@@ -13,9 +12,19 @@ uniform float time;
 
 out vec4 FragColor;
 
-
-
 void main() {
-    i = ambient*material_color + diffuse*material_color + specular*material_specular;
-    FragColor = vec4(i, 1.0);
+
+    vec3 ambientNew = ambient*material_color;
+    vec3 ambientClamped = clamp(ambientNew, vec3 (0,0,0), vec3 (1,1,1));
+
+    vec3 diffuseNew = diffuse*material_color;
+    vec3 diffuseClamped = clamp(diffuseNew, vec3 (0,0,0), vec3 (1,1,1));
+
+    // is specular supposed to be multipled by material_specular?
+    vec3 specularNew = specular;//*material_specular;
+    vec3 specularClamped = clamp(specularNew, vec3 (0,0,0), vec3 (1,1,1));
+
+    vec3 illumination = ambientClamped + diffuseClamped + specularClamped;
+    vec3 clamped = clamp(illumination, vec3 (0,0,0), vec3 (1.0,1.0,1.0));
+    FragColor = vec4(illumination, 1.0);
 }
