@@ -34,7 +34,7 @@
                             size: glMatrix.vec3.fromValues(8.0, 1.0, 8.0)  // width, 1.0, depth
                         },
                         {
-                            type: 'cube',
+                            type: 'sphere',
                             shader: 'color',
                             material: {
                                 color: glMatrix.vec3.fromValues(0.1, 0.4, 0.9),  // red, green, blue
@@ -223,6 +223,7 @@
                 <select id="shading_alg" onchange="SelectShadingAlgorithm()">
                     <option value="gouraud">Gouraud</option>
                     <option value="phong">Phong</option>
+                    <option value="emissive">Emissive</option>
                 </select>
                 <br/>
                 <div class="spacer2"></div>

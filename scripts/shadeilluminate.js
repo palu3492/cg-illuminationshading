@@ -102,61 +102,63 @@ class GlApp {
         //goroud or phong
         //loop through models
         //-based on texture undefined or not, run different scripts
-
-
-
-        if (this.algorithm === 'gouraud') {
-            for (let i = 0; i < this.scene.models.length; i++) {
-                //this tells us which program shader to use
-                this.gl.useProgram(this.shader['gouraud_color'].program);
-                console.log(this.scene.models[i].texture);
-
-                // building up the model matrix, which is the translate and scale matrix 
-                glMatrix.mat4.identity(this.model_matrix);
-                glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
-                glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
-
-                //2fv for textures
-                //uniforms are global per model values
-                //uploads information to the graphics card: uniform data per model
-                //three floating values representing model color r,g,b
-                this.gl.uniform3fv(this.shader['gouraud_color'].uniform.material, this.scene.models[i].material.color);
-                //parameters (shader's variable, transpose, actual 16 values to be 4x4matrix)
-                this.gl.uniformMatrix4fv(this.shader['gouraud_color'].uniform.projection, false, this.projection_matrix);
-                this.gl.uniformMatrix4fv(this.shader['gouraud_color'].uniform.view, false, this.view_matrix);
-                this.gl.uniformMatrix4fv(this.shader['gouraud_color'].uniform.model, false, this.model_matrix);
-
-                this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
-                this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
-                this.gl.bindVertexArray(null);
-            }
-
+        let shaderType = 'emissive';
+        if(this.algorithm === 'phong'){
+            shaderType = 'phong_color';
+        }else if(this.algorithm === 'gouraud'){
+            shaderType = 'gouraud_color';
         }
-        else {
-            for (let i = 0; i < this.scene.models.length; i++) {
-                //this tells us which program shader to use
-                this.gl.useProgram(this.shader['emissive'].program);
-                console.log(this.scene.models[i].texture);
+        // shaderType = 'emissive';
+        for (let i = 0; i < this.scene.models.length; i++) {
+            //this tells us which program shader to use
+            this.gl.useProgram(this.shader[shaderType].program);
+            // console.log(this.scene.models[i].texture);
 
-                // building up the model matrix, which is the translate and scale matrix 
-                glMatrix.mat4.identity(this.model_matrix);
-                glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
-                glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
+            // building up the model matrix, which is the translate and scale matrix
+            glMatrix.mat4.identity(this.model_matrix);
+            glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
+            glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
 
-                //2fv for textures
-                //uniforms are global per model values
-                //uploads information to the graphics card: uniform data per model
-                //three floating values representing model color r,g,b
-                this.gl.uniform3fv(this.shader['emissive'].uniform.material, this.scene.models[i].material.color);
-                //parameters (shader's variable, transpose, actual 16 values to be 4x4matrix)
-                this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.projection, false, this.projection_matrix);
-                this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.view, false, this.view_matrix);
-                this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.model, false, this.model_matrix);
-
-                this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
-                this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
-                this.gl.bindVertexArray(null);
+            //2fv for textures
+            //uniforms are global per model values
+            //uploads information to the graphics card: uniform data per model
+            //three floating values representing model color r,g,b
+            if(this.algorithm === 'gouraud') {
+                // model
+                this.gl.uniform3fv(this.shader[shaderType].uniform.material_col, this.scene.models[i].material.color);
+                this.gl.uniform3fv(this.shader[shaderType].uniform.material_spec, this.scene.models[i].material.specular);
+                this.gl.uniform1ui(this.shader[shaderType].uniform.shininess, this.scene.models[i].material.shininess);
+                // camera
+                this.gl.uniform3fv(this.shader[shaderType].uniform.camera_pos, this.scene.camera.position);
+                // light
+                this.gl.uniform3fv(this.shader[shaderType].uniform.light_ambient, this.scene.light.ambient);
+                this.gl.uniform3fv(this.shader[shaderType].uniform.light_pos, this.scene.light.point_lights[0].position);
+                this.gl.uniform3fv(this.shader[shaderType].uniform.light_col, this.scene.light.point_lights[0].color);
+            } else {
+                this.gl.uniform3fv(this.shader[shaderType].uniform.material, this.scene.models[i].material.color);
             }
+
+            //parameters (shader's variable, transpose, actual 16 values to be 4x4matrix)
+            this.gl.uniformMatrix4fv(this.shader[shaderType].uniform.projection, false, this.projection_matrix);
+            this.gl.uniformMatrix4fv(this.shader[shaderType].uniform.view, false, this.view_matrix);
+            this.gl.uniformMatrix4fv(this.shader[shaderType].uniform.model, false, this.model_matrix);
+
+            this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
+            this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
+            this.gl.bindVertexArray(null);
+            /*
+            in uniform object:
+            light_ambient: light_ambient_uniform,
+            light_pos: light_pos_uniform,
+            light_col: light_col_uniform,
+            camera_pos: camera_pos_uniform,
+            material_col: material_col_uniform,
+            material_spec: material_spec_uniform,
+            shininess: shininess_uniform,
+            projection: projection_uniform,
+            view: view_uniform,
+            model: model_uniform
+             */
         }
         //leave this hardcoded for the lights
         // draw all light sources
@@ -166,7 +168,6 @@ class GlApp {
             glMatrix.mat4.identity(this.model_matrix);
             glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.light.point_lights[i].position);
             glMatrix.mat4.scale(this.model_matrix, this.model_matrix, glMatrix.vec3.fromValues(0.1, 0.1, 0.1));
-
 
             this.gl.uniform3fv(this.shader['emissive'].uniform.material, this.scene.light.point_lights[i].color);
             this.gl.uniformMatrix4fv(this.shader['emissive'].uniform.projection, false, this.projection_matrix);
