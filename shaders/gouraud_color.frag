@@ -21,7 +21,7 @@ void main() {
     vec3 diffuseClamped = clamp(diffuseNew, vec3 (0,0,0), vec3 (1,1,1));
 
     // is specular supposed to be multipled by material_specular?
-    vec3 specularNew = specular;//*material_specular;
+    vec3 specularNew = specular*material_specular;
     vec3 specularClamped = clamp(specularNew, vec3 (0,0,0), vec3 (1,1,1));
 
     vec3 illumination = ambientClamped + diffuseClamped + specularClamped;

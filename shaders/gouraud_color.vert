@@ -25,6 +25,11 @@ out vec3 specular;
 // light_color * material_specular [fragment shader] * (normalized reflect light direction DOT normalized view direction)
 
 void main() {
+    //Do transformations to vertex position and normal
+    //vertex by model matrix
+    //normal by normal matrix (derive from model matrix)
+    //flip so lightposition - vertex position
+
     // L, N, R, V
     vec3 lightVector, surfaceNormalVector, reflectLightVector, viewVector;
     // For diffuse
