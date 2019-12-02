@@ -11,8 +11,8 @@ uniform vec3 light_color; // Ip
 uniform vec3 camera_position;
 uniform float material_shininess; // n
 uniform mat4 model_matrix;
-uniform mat4 view_matrix;
-uniform mat4 projection_matrix;
+uniform mat4 view_matrix; //the transformation of the camera
+uniform mat4 projection_matrix; //
 
 out vec3 ambient;
 // Ia * Ka
@@ -31,16 +31,19 @@ void main() {
     //flip so lightposition - vertex position
 
     // L, N, R, V
-    vec3 lightVector, surfaceNormalVector, reflectLightVector, viewVector;
+    vec3 lightVector, surfaceNormalVector, reflectLightVector, viewVector, transVertPos, transVertNorm;
+    transVertPos = vec3(model_matrix*vec4(vertex_position,1.0));
+    transVertNorm = inverse(transpose(mat3(model_matrix))) * vertex_normal;
     // For diffuse
-    lightVector = normalize(vertex_position - light_position); // L vector
-    surfaceNormalVector = normalize(vertex_normal); // N vector
+    lightVector = normalize(light_position - transVertPos); // L vector
+    surfaceNormalVector = normalize(transVertNorm); // N vector
     // For specular
-    reflectLightVector = normalize(reflect(lightVector, surfaceNormalVector)); // R vector
-    viewVector = normalize(vertex_position - camera_position); // V vector
+    //negative reflect light vector fixed this, but we don't know why
+    reflectLightVector = normalize(-reflect(lightVector, surfaceNormalVector)); // R vector
+    viewVector = normalize(camera_position - transVertPos); // V vector
 
     ambient = light_ambient;
-    diffuse = light_color * (dot(surfaceNormalVector, lightVector));
+    diffuse = light_color * clamp(dot(surfaceNormalVector, lightVector),0.0,1.0);
     specular = light_color * pow(dot(reflectLightVector, viewVector), material_shininess);
 
     gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertex_position, 1.0);
