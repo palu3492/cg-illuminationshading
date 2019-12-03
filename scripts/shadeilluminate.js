@@ -140,6 +140,7 @@ class GlApp {
                 this.gl.uniform3fv(this.shader[shaderType].uniform.light_pos, this.scene.light.point_lights[0].position);
                 this.gl.uniform3fv(this.shader[shaderType].uniform.light_col, this.scene.light.point_lights[0].color);
             } else {
+                // emissive
                 this.gl.uniform3fv(this.shader[shaderType].uniform.material, this.scene.models[i].material.color);
             }
 

@@ -22,6 +22,22 @@ out vec3 specular;
 out vec2 frag_texcoord;
 
 void main() {
+
+    vec3 lightVector, surfaceNormalVector, reflectLightVector, viewVector, transVertPos, transVertNorm;
+    transVertPos = vec3(model_matrix*vec4(vertex_position,1.0));
+    transVertNorm = inverse(transpose(mat3(model_matrix))) * vertex_normal;
+    // For diffuse
+    lightVector = normalize(light_position - transVertPos); // L vector
+    surfaceNormalVector = normalize(transVertNorm); // N vector
+    // For specular
+    //negative reflect light vector fixed this, but we don't know why
+    reflectLightVector = normalize(-reflect(lightVector, surfaceNormalVector)); // R vector
+    viewVector = normalize(camera_position - transVertPos); // V vector
+
+    ambient = light_ambient;
+    diffuse = light_color * clamp(dot(surfaceNormalVector, lightVector),0.0,1.0);
+    specular = light_color * pow(dot(reflectLightVector, viewVector), material_shininess);
+
     gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertex_position, 1.0);
     frag_texcoord = vertex_texcoord * texture_scale;
 }

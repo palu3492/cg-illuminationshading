@@ -8,7 +8,6 @@ in vec3 specular; // Ip * dot(R, V)^n
 
 uniform vec3 material_color;    // Ka and Kd
 uniform vec3 material_specular; // Ks
-uniform float time;
 
 out vec4 FragColor;
 
