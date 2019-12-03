@@ -99,17 +99,22 @@ class GlApp {
         // this will be dependent on the this.algorithm and the color/texture shader
         console.log(this.algorithm);
 
-        //goroud or phong
-        //loop through models
-        //-based on texture undefined or not, run different scripts
-        let shaderType = 'emissive';
-        if(this.algorithm === 'phong'){
-            shaderType = 'phong_color';
-        }else if(this.algorithm === 'gouraud'){
-            shaderType = 'gouraud_color';
-        }
         // shaderType = 'emissive';
         for (let i = 0; i < this.scene.models.length; i++) {
+
+            //goroud or phong
+            //loop through models
+            //-based on texture undefined or not, run different scripts
+            let shader = this.scene.models[i].shader;
+
+            let shaderType = 'emissive';
+            if (this.algorithm === 'phong') {
+                shaderType = 'phong_'+shader;
+            } else if (this.algorithm === 'gouraud') {
+                shaderType = 'gouraud_'+shader;
+            }
+
+
             //this tells us which program shader to use
             this.gl.useProgram(this.shader[shaderType].program);
             // console.log(this.scene.models[i].texture);
