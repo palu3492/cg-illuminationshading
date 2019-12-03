@@ -9,7 +9,7 @@ class GlApp {
         }
 
         this.scene = scene;
-        this.algorithm = 'gouraud';
+        this.algorithm = 'phong';
         this.shader = {
             gouraud_color: null, gouraud_texture: null,
             phong_color: null, phong_texture: null
@@ -123,7 +123,7 @@ class GlApp {
             //uniforms are global per model values
             //uploads information to the graphics card: uniform data per model
             //three floating values representing model color r,g,b
-            if(this.algorithm === 'gouraud') {
+            if (this.algorithm === 'gouraud' || this.algorithm === 'phong') {
                 // model
                 this.gl.uniform3fv(this.shader[shaderType].uniform.material_col, this.scene.models[i].material.color);
                 this.gl.uniform3fv(this.shader[shaderType].uniform.material_spec, this.scene.models[i].material.specular);
