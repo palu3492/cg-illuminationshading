@@ -22,7 +22,7 @@
       "material": {
         "color":[0.1, 0.4, 0.9],
         "specular":[1.0, 1.0, 1.0],
-        "shininess": 32
+        "shininess": 100
       },
       "center":[0.0, 1.0, -6.0],
       "size":[2.0, 2.0, 2.0]
