@@ -27,6 +27,7 @@ void main() {
 
     vec3 illumination = ambientClamped + diffuseClamped + specularClamped;
     vec3 clamped = clamp(illumination, vec3 (0.0,0.0,0.0), vec3 (1.0,1.0,1.0));
-    
+
+    // vec4(illumination, 1.0);
     FragColor = texture(image, frag_texcoord);
 }

@@ -44,6 +44,9 @@ class GlApp {
             emissive_vs, emissive_fs])
             .then((shaders) => this.LoadShaders(shaders))
             .catch((error) => this.GetFileError(error));
+
+        this.textures = [];
+        this.textureInitialized = false;
     }
 
     InitializeGlApp() {
@@ -75,8 +78,25 @@ class GlApp {
     }
 
     InitializeTexture(image_url) {
+        console.log(image_url);
+        // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL
         // create a texture, and upload a temporary 1px white RGBA array [255,255,255,255]
         let texture;
+        texture = this.gl.createTexture();
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+
+        // this.shader[shaderType].uniform.image
+
+        const level = 0;
+        const internalFormat = this.gl.RGBA;
+        const width = 1;
+        const height = 1;
+        const border = 0;
+        const srcFormat = this.gl.RGBA;
+        const srcType = this.gl.UNSIGNED_BYTE;
+        const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
+        this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat,
+            width, height, border, srcFormat, srcType, pixel);
 
         // load the actual image
         let image = new Image();
@@ -88,7 +108,18 @@ class GlApp {
     }
 
     UpdateTexture(texture, image_element) {
-
+        console.log('update');
+        //this.gl.bindTexture(this.gl.TEXTURE_2D+(this.textures.length), texture);
+        const level = 0;
+        const internalFormat = this.gl.RGBA;
+        const srcFormat = this.gl.RGBA;
+        const srcType = this.gl.UNSIGNED_BYTE;
+        this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat,
+            srcFormat, srcType, image_element);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        // this.textures.push(texture);
+        // this.gl.uniform1i(this.shader['gouraud_texture'].uniform.image, this.gl.TEXTURE_2D+(this.textures.length));
+        this.Render();
     }
 
     Render() {
@@ -105,15 +136,12 @@ class GlApp {
             //goroud or phong
             //loop through models
             //-based on texture undefined or not, run different scripts
-            let shader = this.scene.models[i].shader;
+            let shader = this.scene.models[i].shader; // 'color' or 'texture'
 
             let shaderType = 'emissive';
-            if (this.algorithm === 'phong') {
-                shaderType = 'phong_'+shader;
-            } else if (this.algorithm === 'gouraud') {
-                shaderType = 'gouraud_'+shader;
+            if(this.algorithm !== 'emissive'){
+                shaderType = this.algorithm+'_'+shader; // phong_color
             }
-
 
             //this tells us which program shader to use
             this.gl.useProgram(this.shader[shaderType].program);
@@ -123,6 +151,16 @@ class GlApp {
             glMatrix.mat4.identity(this.model_matrix);
             glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
             glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
+
+            if(shader === 'texture' && this.scene.models[i].textureInitialized === undefined){
+                this.scene.models[i].textureInitialized = true;
+
+                // texture scale
+                this.gl.uniform2fv(this.shader[shaderType].uniform.tex_scale, this.scene.models[i].texture.scale);
+
+                let image = this.scene.models[i].texture.url;
+                this.InitializeTexture(image);
+            }
 
             //2fv for textures
             //uniforms are global per model values
