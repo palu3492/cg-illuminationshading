@@ -81,15 +81,22 @@
                     light: {
                         ambient: glMatrix.vec3.fromValues(0.5, 0.5, 0.5),  // red, green, blue
                         point_lights: [
-                            // test light
                             {
-                                position: glMatrix.vec3.fromValues(1, 2, -2),  // x, y, z
-                                color: glMatrix.vec3.fromValues(1.0, 1.0, 0.8)  // red, green, blue
+                                "position": [2.2, 2.5, -4.8],
+                                "color": [1.0, 1.0, 1.0]
                             },
                             {
-                                position: glMatrix.vec3.fromValues(-0.7, 1.1, -2),  // x, y, z
-                                color: glMatrix.vec3.fromValues(1.0, 1.0, 0.8)  // red, green, blue
+                                "position": [-1.5, 0.8, -3.1],
+                                "color": [1.0, 1.0, 1.0]
                             }
+                            // {
+                            //     position: glMatrix.vec3.fromValues(1, 2, -2),  // x, y, z
+                            //     color: glMatrix.vec3.fromValues(1.0, 1.0, 0.8)  // red, green, blue
+                            // },
+                            // {
+                            //     position: glMatrix.vec3.fromValues(-0.7, 1.1, -2),  // x, y, z
+                            //     color: glMatrix.vec3.fromValues(1.0, 1.0, 0.8)  // red, green, blue
+                            // }
                         ]
                     }
                 }
