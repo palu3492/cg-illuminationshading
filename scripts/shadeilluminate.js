@@ -46,7 +46,6 @@ class GlApp {
             .catch((error) => this.GetFileError(error));
 
         this.textures = [];
-        this.textureInitialized = false;
     }
 
     InitializeGlApp() {
@@ -78,25 +77,12 @@ class GlApp {
     }
 
     InitializeTexture(image_url) {
-        console.log(image_url);
-        // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Using_textures_in_WebGL
-        // create a texture, and upload a temporary 1px white RGBA array [255,255,255,255]
-        let texture;
-        texture = this.gl.createTexture();
+        let texture = this.gl.createTexture();
+
         this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
-
-        // this.shader[shaderType].uniform.image
-
-        const level = 0;
-        const internalFormat = this.gl.RGBA;
-        const width = 1;
-        const height = 1;
-        const border = 0;
-        const srcFormat = this.gl.RGBA;
-        const srcType = this.gl.UNSIGNED_BYTE;
-        const pixel = new Uint8Array([0, 0, 255, 255]);  // opaque blue
-        this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat,
-            width, height, border, srcFormat, srcType, pixel);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE,
+            new Uint8Array([255, 255, 255, 255])); // make texture all white while image loads
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
 
         // load the actual image
         let image = new Image();
@@ -105,21 +91,16 @@ class GlApp {
             this.UpdateTexture(texture, image);
         }, false);
         image.src = image_url;
+
+        return texture;
     }
 
     UpdateTexture(texture, image_element) {
-        console.log('update');
-        //this.gl.bindTexture(this.gl.TEXTURE_2D+(this.textures.length), texture);
-        const level = 0;
-        const internalFormat = this.gl.RGBA;
-        const srcFormat = this.gl.RGBA;
-        const srcType = this.gl.UNSIGNED_BYTE;
-        this.gl.texImage2D(this.gl.TEXTURE_2D, level, internalFormat,
-            srcFormat, srcType, image_element);
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA,this.gl.UNSIGNED_BYTE, image_element);
         this.gl.generateMipmap(this.gl.TEXTURE_2D);
-        // this.textures.push(texture);
-        // this.gl.uniform1i(this.shader['gouraud_texture'].uniform.image, this.gl.TEXTURE_2D+(this.textures.length));
-        this.Render();
+        this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+        this.Render(); // Render again with image this time
     }
 
     Render() {
@@ -128,7 +109,6 @@ class GlApp {
 
         // draw all models --> note you need to properly select shader here
         // this will be dependent on the this.algorithm and the color/texture shader
-        console.log(this.algorithm);
 
         // shaderType = 'emissive';
         for (let i = 0; i < this.scene.models.length; i++) {
@@ -152,17 +132,15 @@ class GlApp {
             glMatrix.mat4.translate(this.model_matrix, this.model_matrix, this.scene.models[i].center);
             glMatrix.mat4.scale(this.model_matrix, this.model_matrix, this.scene.models[i].size);
 
-            if(shader === 'texture' && this.scene.models[i].textureInitialized === undefined){
-                this.scene.models[i].textureInitialized = true;
-
-                // texture scale
+            // Add texture to model
+            if(shader === 'texture'){
                 this.gl.uniform2fv(this.shader[shaderType].uniform.tex_scale, this.scene.models[i].texture.scale);
-
-                let image = this.scene.models[i].texture.url;
-                this.InitializeTexture(image);
+                this.gl.bindTexture(this.gl.TEXTURE_2D, null);
+                let texture = this.scene.models[i].texture.id;
+                this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+                this.gl.activeTexture(this.gl.TEXTURE0);
             }
 
-            //2fv for textures
             //uniforms are global per model values
             //uploads information to the graphics card: uniform data per model
             //three floating values representing model color r,g,b

@@ -176,6 +176,7 @@
                         m.texture.url = new_scene.models[i].texture.url;
                         m.texture.scale = glMatrix.vec2.fromValues(new_scene.models[i].texture.scale[0],
                                                                    new_scene.models[i].texture.scale[1]);
+                        m.texture.id = glapp.InitializeTexture(m.texture.url);
                     }
                     scene.models.push(m);
                 }
@@ -184,7 +185,7 @@
                                   new_scene.light.ambient[1], new_scene.light.ambient[2]);
                 scene.light.point_lights = [];
                 for (let i = 0; i < new_scene.light.point_lights.length; i++) {
-                    let l = {}
+                    let l = {};
                     l.position = glMatrix.vec3.fromValues(new_scene.light.point_lights[i].position[0],
                                                           new_scene.light.point_lights[i].position[1],
                                                           new_scene.light.point_lights[i].position[2]);
