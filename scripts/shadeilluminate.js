@@ -151,10 +151,17 @@ class GlApp {
                 this.gl.uniform1f(this.shader[shaderType].uniform.shininess, this.scene.models[i].material.shininess);
                 // camera
                 this.gl.uniform3fv(this.shader[shaderType].uniform.camera_pos, this.scene.camera.position);
-                // light (one light)
+                // lights
                 this.gl.uniform3fv(this.shader[shaderType].uniform.light_ambient, this.scene.light.ambient);
-                this.gl.uniform3fv(this.shader[shaderType].uniform.light_pos, this.scene.light.point_lights[0].position);
-                this.gl.uniform3fv(this.shader[shaderType].uniform.light_col, this.scene.light.point_lights[0].color);
+                let program = this.shader[shaderType].program;
+                this.gl.uniform1i(this.gl.getUniformLocation(program, 'light_count_vert'), this.scene.light.point_lights.length);
+                this.gl.uniform1i(this.gl.getUniformLocation(program, 'light_count_frag'), this.scene.light.point_lights.length);
+                for(let l=0;l<this.scene.light.point_lights.length;l++){
+                    let light_col_uniform = this.gl.getUniformLocation(program, 'light_color['+l+']');
+                    let camera_pos_uniform = this.gl.getUniformLocation(program, 'light_position['+l+']');
+                    this.gl.uniform3fv(camera_pos_uniform, this.scene.light.point_lights[l].position);
+                    this.gl.uniform3fv(light_col_uniform, this.scene.light.point_lights[l].color);
+                }
             } else {
                 // emissive
                 this.gl.uniform3fv(this.shader[shaderType].uniform.material, this.scene.models[i].material.color);
