@@ -25,8 +25,9 @@ void main() {
         vec3 specularNew = specular[i]*material_specular;
         vec3 specularClamped = clamp(specularNew, vec3 (0.0,0.0,0.0), vec3 (1.0,1.0,1.0));
 
-        illumination += ambientClamped + diffuseClamped + specularClamped;
+        illumination += diffuseClamped + specularClamped;
     }
+    illumination += ambientClamped;
 
     vec3 clamped = clamp(illumination, vec3 (0.0,0.0,0.0), vec3 (1.0,1.0,1.0));
     FragColor = vec4(clamped, 1.0);

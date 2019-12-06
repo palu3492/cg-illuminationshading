@@ -26,7 +26,7 @@
             "material": {
                 "color": [1.0, 1.0, 1.0],
                 "specular": [1.0, 1.0, 1.0],
-                "shininess": 32
+                "shininess": 16
             },
             "texture": {
                 "url": "images/World_Map.jpg",
