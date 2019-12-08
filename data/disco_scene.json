@@ -1,0 +1,123 @@
+{
+    "camera": {
+        "position":[0.0, 4.0, 16.0],
+        "direction":[0.0, 0.0, -1.0],
+        "up":[0.0, 1.0, 0.0]
+      },
+    "models": [
+        {
+            "type": "plane",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [0.0, 0.0, 0.0],
+                "shininess": 1
+            },
+            "texture": {
+                "url": "images/B&Wchecker.jpg",
+                "scale": [8, 8]
+            },
+            "center": [0.0, 0.0, 0.0],
+            "size": [12.0, 1.0, 12.0]
+        },
+                {
+            "type": "plane",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 32
+            },
+            "texture": {
+                "url": "images/mirror2.jpg",
+                "scale": [6, 6]
+            },
+            "center": [0.0, 8.0, 0.0],
+            "size": [12.0, 1.0, 12.0]
+        },
+        {
+            "type": "cube",
+            "shader": "texture",
+            "material": {
+              "color":[0.5, 0.5, 0.5],
+              "specular":[1.0, 1.0, 1.0],
+              "shininess": 32
+            },
+            "texture": {
+                "url": "images/Grey bricks.jpg",
+                "scale": [3, 3]
+            },
+            "center":[7.0, 4.0, 0.0],
+            "size":[2.0, 8.0, 12.0]
+        },
+        {
+            "type": "cube",
+            "shader": "texture",
+            "material": {
+              "color":[0.5, 0.5, 0.5],
+              "specular":[1.0, 1.0, 1.0],
+              "shininess": 32
+            },
+            "texture": {
+                "url": "images/Grey bricks.jpg",
+                "scale": [3, 3]
+            },
+            "center":[-7.0, 4.0, 0.0],
+            "size":[2.0, 8.0, 12.0]
+        },
+        {
+            "type": "cube",
+            "shader": "texture",
+            "material": {
+              "color":[0.5, 0.5, 0.5],
+              "specular":[1.0, 1.0, 1.0],
+              "shininess": 32
+            },
+            "texture": {
+                "url": "images/Grey bricks.jpg",
+                "scale": [3, 3]
+            },
+            "center":[0.0, 4.0, -7.0],
+            "size":[12.0, 8.0, 2.0]
+        },
+        {
+            "type": "cube",
+            "shader": "color",
+            "material": {
+              "color":[0.1, 0.1, 0.1],
+              "specular":[1.0, 1.0, 1.0],
+              "shininess": 32
+            },
+            "center":[0.0, 7.0, 0.0],
+            "size":[0.01, 2.0, 0.01]
+        },
+        {
+            "type": "sphere",
+            "shader": "texture",
+            "material": {
+                "color": [1.0, 1.0, 1.0],
+                "specular": [1.0, 1.0, 1.0],
+                "shininess": 16
+            },
+            "texture": {
+                "url": "images/DiscoBall.jpg",
+                "scale": [3, 3]
+            },
+            "center": [0.0, 5.0, 0.0],
+            "size": [2.0, 2.0, 2.0]
+        }
+    ],
+    "light": {
+        "ambient": [0.6, 0.6, 0.6],
+        "point_lights": [
+            {
+                "position": [4.1, 7.0, -3.0],
+                "color": [0.2, 0.92, 0.87]
+            },
+            {
+                "position": [-4.1, 7, -3.0],
+                "color": [0.92, 0.2, 0.75]
+            }
+        ]
+    }
+}
