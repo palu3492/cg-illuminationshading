@@ -9,7 +9,7 @@ class GlApp {
         }
 
         this.scene = scene;
-        this.algorithm = 'gouraud';
+        this.algorithm = 'phong'; // <-- set this back to gouraud
         this.shader = {
             gouraud_color: null, gouraud_texture: null,
             phong_color: null, phong_texture: null

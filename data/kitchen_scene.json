@@ -1,0 +1,294 @@
+{
+  "camera": {
+    "position":[8.0, 2.5, 8.0],
+    "direction":[-1, -0.3, -1.0],
+    "up":[0.0, 1.0, 0.0]
+  },
+  "models": [
+    {
+      "name": "floor",
+      "type": "plane",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [1.0, 1.0, 1.0],
+        "shininess": 32
+      },
+      "texture": {
+        "url": "images/kitchen/oak_floor.jpg",
+        "scale": [10, 10]
+      },
+      "center": [5.0, 0.0, 5.0],
+      "size": [10.0, 1.0, 10.0]
+    },
+    {
+      "name": "ceiling",
+      "type": "plane",
+      "shader": "color",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [1.0, 1.0, 1.0],
+        "shininess": 32
+      },
+      "center": [5.0, 3.5, 5.0],
+      "size": [10.0, 1.0, 10.0]
+    },
+    {
+      "name": "left wall",
+      "type": "cube",
+      "shader": "color",
+      "material": {
+        "color": [0.6, 0.6, 0.6],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "center": [0.0, 2.5, 5.0],
+      "size": [0.1, 5.0, 10.0]
+    },
+    {
+      "name": "right wall",
+      "type": "cube",
+      "shader": "color",
+      "material": {
+        "color": [0.6, 0.6, 0.6],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "center": [5.0, 2.5, 0.0],
+      "size": [10.0, 5.0, 0.1]
+    },
+    {
+      "name": "middle cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet2.jpg",
+        "scale": [1, 1]
+      },
+      "center": [4.0, 0.5, 5.0],
+      "size": [1.0, 1.0, 1.0]
+    },
+    {
+      "name": "middle cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet2.jpg",
+        "scale": [1, 1]
+      },
+      "center": [3.0, 0.5, 5.0],
+      "size": [1.0, 1.0, 1.0]
+    },
+    {
+      "name": "middle cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet2.jpg",
+        "scale": [1, 1]
+      },
+      "center": [3.0, 0.5, 4.0],
+      "size": [1.0, 1.0, 1.0]
+    },
+    {
+      "name": "middle cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet2.jpg",
+        "scale": [1, 1]
+      },
+      "center": [3.0, 0.5, 3.0],
+      "size": [1.0, 1.0, 1.0]
+    },
+    {
+      "name": "middle cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet2.jpg",
+        "scale": [1, 1]
+      },
+      "center": [4.0, 0.5, 3.0],
+      "size": [1.0, 1.0, 1.0]
+    },
+    {
+      "name": "middle countertop",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/granite.jpg",
+        "scale": [1, 1]
+      },
+      "center": [3.5, 1.0, 4.0],
+      "size": [2.1, 0.055, 3.1]
+    },
+    {
+      "name": "orange",
+      "type": "sphere",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [1.0, 1.0, 1.0],
+        "shininess": 1
+      },
+      "texture": {
+        "url": "images/kitchen/orange.jpg",
+        "scale": [1, 1]
+      },
+      "center": [4.0, 1.13, 5.0],
+      "size": [0.15, 0.15, 0.15]
+    },
+    {
+      "name": "soccer ball",
+      "type": "sphere",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [1.0, 1.0, 1.0],
+        "shininess": 1
+      },
+      "texture": {
+        "url": "images/kitchen/soccer.jpg",
+        "scale": [1, 1]
+      },
+      "center": [4.0, 1.2, 3.0],
+      "size": [0.4, 0.4, 0.4]
+    },
+    {
+      "name": "green ball",
+      "type": "sphere",
+      "shader": "color",
+      "material": {
+        "color": [0.5, 1.0, 0.5],
+        "specular": [0.1, 0.1, 0.1],
+        "shininess": 35
+      },
+      "center": [3.0, 1.2, 3.0],
+      "size": [0.5, 0.5, 0.5]
+    },
+    {
+      "name": "fridge",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/fridge.jpg",
+        "scale": [1, 1]
+      },
+      "center": [3.0, 1.0, 0.5],
+      "size": [1.2, 3.0, 1.2]
+    },
+    {
+      "name": "cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet3.jpg",
+        "scale": [3, 1]
+      },
+      "center": [0.5, 0.5, 1.5],
+      "size": [1.0, 1.0, 3.0]
+    },
+    {
+      "name": "cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet3.jpg",
+        "scale": [3, 1]
+      },
+      "center": [0.5, 0.5, 5.5],
+      "size": [1.0, 1.0, 3.0]
+    },
+    {
+      "name": "cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/oven.jpg",
+        "scale": [1, 1]
+      },
+      "center": [0.5, 0.5, 3.5],
+      "size": [1.0, 1.0, 1.0]
+    },
+    {
+      "name": "left countertop",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/granite.jpg",
+        "scale": [1, 6]
+      },
+      "center": [0.5, 1.0, 3.5],
+      "size": [1.1, 0.055, 7.1]
+    }
+  ],
+  "light": {
+    "ambient": [0.5, 0.5, 0.5],
+    "point_lights": [
+      {
+        "position": [3, 2, 6],
+        "color": [1.0, 1.0, 1.0]
+      },
+      {
+        "position": [6, 2, 3],
+        "color": [1.0, 1.0, 1.0]
+      }
+    ]
+  }
+}
