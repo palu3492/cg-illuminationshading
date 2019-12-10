@@ -26,13 +26,13 @@ void main() {
         lightVector = normalize(light_position[i] - frag_pos);// L vector
         surfaceNormalVector = normalize(frag_normal);// N vector
 
-        reflectLightVector = normalize(-reflect(lightVector, surfaceNormalVector));// R vector
+        reflectLightVector = normalize(reflect(-lightVector, surfaceNormalVector));// R vector
         viewVector = normalize(camera_position - frag_pos);// V vector
 
         diffuse = light_color[i] * clamp(dot(surfaceNormalVector, lightVector), 0.0, 1.0);
-        specular = light_color[i] * pow(dot(reflectLightVector, viewVector), material_shininess);
+        specular = light_color[i] * pow(clamp(dot(reflectLightVector, viewVector),0.0, 1.0), material_shininess);
 
-        vec3 diffuseNew = diffuse*material_color;
+        vec3 diffuseNew = diffuse*material_color* texture(image, frag_texcoord).rgb;
         vec3 diffuseClamped = clamp(diffuseNew, vec3 (0.0, 0.0, 0.0), vec3 (1.0, 1.0, 1.0));
 
         vec3 specularNew = specular*material_specular;
@@ -40,11 +40,11 @@ void main() {
 
         illumination += diffuseClamped + specularClamped;
     }
-    vec3 ambientNew = light_ambient*material_color;
+    vec3 ambientNew = light_ambient*material_color* texture(image, frag_texcoord).rgb;
     vec3 ambientClamped = clamp(ambientNew, vec3 (0.0, 0.0, 0.0), vec3 (1.0, 1.0, 1.0));
     illumination += ambientClamped;
 
     vec3 clamped = clamp(illumination, vec3 (0.0,0.0,0.0), vec3 (1.0,1.0,1.0));
 
-    FragColor = vec4(clamped, 1.0) * texture(image, frag_texcoord);
+    FragColor = vec4(clamped, 1.0);
 }

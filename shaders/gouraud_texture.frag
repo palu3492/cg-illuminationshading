@@ -18,11 +18,11 @@ void main() {
 
     vec3 illumination;
 
-    vec3 ambientNew = ambient*material_color;
+    vec3 ambientNew = ambient*material_color*texture(image, frag_texcoord) ;
     vec3 ambientClamped = clamp(ambientNew, vec3 (0.0,0.0,0.0), vec3 (1.0,1.0,1.0));
 
     for(int i=0;i<light_count_frag;i++){
-        vec3 diffuseNew = diffuse[i]*material_color;
+        vec3 diffuseNew = diffuse[i]*material_color*texture(image, frag_texcoord) ;
         vec3 diffuseClamped = clamp(diffuseNew, vec3 (0.0,0.0,0.0), vec3 (1.0,1.0,1.0));
 
         vec3 specularNew = specular[i]*material_specular;
@@ -34,5 +34,5 @@ void main() {
 
     vec3 clamped = clamp(illumination, vec3 (0.0,0.0,0.0), vec3 (1.0,1.0,1.0));
 
-    FragColor = texture(image, frag_texcoord) * vec4(clamped, 1.0);
+    FragColor = vec4(clamped, 1.0);
 }

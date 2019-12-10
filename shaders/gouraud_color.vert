@@ -41,11 +41,11 @@ void main() {
         surfaceNormalVector = normalize(transVertNorm); // N vector
         // For specular
         //negative reflect light vector fixed this, but we don't know why
-        reflectLightVector = normalize(-reflect(lightVector, surfaceNormalVector)); // R vector
+        reflectLightVector = normalize(reflect(-lightVector, surfaceNormalVector)); // R vector
         viewVector = normalize(camera_position - transVertPos); // V vector
 
         diffuse[i] = light_color[i] * clamp(dot(surfaceNormalVector, lightVector),0.0,1.0);
-        specular[i] = light_color[i] * pow(dot(reflectLightVector, viewVector), material_shininess);
+        specular[i] = light_color[i] * pow(clamp(dot(reflectLightVector, viewVector),0.0,1.0), material_shininess);
     }
     ambient = light_ambient;
 
