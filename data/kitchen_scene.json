@@ -160,14 +160,14 @@
       "material": {
         "color": [1.0, 1.0, 1.0],
         "specular": [1.0, 1.0, 1.0],
-        "shininess": 1
+        "shininess": 32
       },
       "texture": {
         "url": "images/kitchen/orange.jpg",
-        "scale": [1, 1]
+        "scale": [2, 2]
       },
-      "center": [4.0, 1.13, 5.0],
-      "size": [0.15, 0.15, 0.15]
+      "center": [4.0, 1.14, 5.0],
+      "size": [0.15, 0.16, 0.15]
     },
     {
       "name": "soccer ball",
@@ -176,26 +176,30 @@
       "material": {
         "color": [1.0, 1.0, 1.0],
         "specular": [1.0, 1.0, 1.0],
-        "shininess": 1
+        "shininess": 32
       },
       "texture": {
         "url": "images/kitchen/soccer.jpg",
         "scale": [1, 1]
       },
-      "center": [4.0, 1.2, 3.0],
+      "center": [5.5, 0.2, 3.0],
       "size": [0.4, 0.4, 0.4]
     },
     {
-      "name": "green ball",
+      "name": "watermelon",
       "type": "sphere",
-      "shader": "color",
+      "shader": "texture",
       "material": {
-        "color": [0.5, 1.0, 0.5],
-        "specular": [0.1, 0.1, 0.1],
-        "shininess": 35
+        "color": [1.0, 1.0, 0.6],
+        "specular": [0.5, 0.5, 0.5],
+        "shininess": 60
       },
-      "center": [3.0, 1.2, 3.0],
-      "size": [0.5, 0.5, 0.5]
+      "texture": {
+        "url": "images/kitchen/watermelon.jpg",
+        "scale": [3, 3]
+      },
+      "center": [4.0, 1.25, 3.1],
+      "size": [0.4, 0.46, 0.4]
     },
     {
       "name": "fridge",
@@ -210,8 +214,8 @@
         "url": "images/kitchen/fridge.jpg",
         "scale": [1, 1]
       },
-      "center": [3.0, 1.0, 0.5],
-      "size": [1.2, 3.0, 1.2]
+      "center": [3.5, 1.3, 0.5],
+      "size": [1.2, 2.8, 1.2]
     },
     {
       "name": "cabinet",
@@ -246,7 +250,39 @@
       "size": [1.0, 1.0, 3.0]
     },
     {
-      "name": "cabinet",
+      "name": "top cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [0.6, 0.6, 0.6],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 100
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet4.jpg",
+        "scale": [3, 1]
+      },
+      "center": [0.5, 2.5, 5.5],
+      "size": [1.0, 1.0, 3.0]
+    },
+    {
+      "name": "top cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet4.jpg",
+        "scale": [3, 1]
+      },
+      "center": [0.5, 2.5, 1.5],
+      "size": [1.0, 1.0, 3.0]
+    },
+    {
+      "name": "oven",
       "type": "cube",
       "shader": "texture",
       "material": {
@@ -276,17 +312,93 @@
       },
       "center": [0.5, 1.0, 3.5],
       "size": [1.1, 0.055, 7.1]
+    },
+    {
+      "name": "right countertop",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 100
+      },
+      "texture": {
+        "url": "images/kitchen/granite.jpg",
+        "scale": [1, 1]
+      },
+      "center": [2.0, 1.0, 0.5],
+      "size": [2.1, 0.055, 1.1]
+    },
+    {
+      "name": "right countertop",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [0.6, 0.6, 0.6],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 100
+      },
+      "texture": {
+        "url": "images/kitchen/granite.jpg",
+        "scale": [1, 1]
+      },
+      "center": [5.5, 1.0, 0.5],
+      "size": [3.1, 0.055, 1.1]
+    },
+    {
+      "name": "cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet3.jpg",
+        "scale": [2, 1]
+      },
+      "center": [2.0, 0.5, 0.5],
+      "size": [2.0, 1.0, 1.0]
+    },
+    {
+      "name": "cabinet",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [1.0, 1.0, 1.0],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 30
+      },
+      "texture": {
+        "url": "images/kitchen/cabinet3.jpg",
+        "scale": [3, 1]
+      },
+      "center": [5.5, 0.5, 0.5],
+      "size": [3.0, 1.0, 1.0]
+    },
+    {
+      "name": "microwave",
+      "type": "cube",
+      "shader": "texture",
+      "material": {
+        "color": [0.6, 0.6, 0.6],
+        "specular": [0.0, 0.0, 0.0],
+        "shininess": 100
+      },
+      "texture": {
+        "url": "images/kitchen/microwave.jpg",
+        "scale": [1, 1]
+      },
+      "center": [0.5, 2.4, 3.5],
+      "size": [1.0, 0.7, 1.0]
     }
   ],
   "light": {
     "ambient": [0.5, 0.5, 0.5],
     "point_lights": [
       {
-        "position": [3, 2, 6],
-        "color": [1.0, 1.0, 1.0]
-      },
-      {
-        "position": [6, 2, 3],
+        "position": [4, 3, 4],
         "color": [1.0, 1.0, 1.0]
       }
     ]
